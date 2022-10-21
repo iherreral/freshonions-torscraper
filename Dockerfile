@@ -20,6 +20,8 @@ WORKDIR /opt/torscraper
 
 # install requirements
 COPY requirements.txt /opt/torscraper
+RUN pip install --upgrade pip
+RUN python -m pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --upgrade requests
 

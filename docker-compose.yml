@@ -22,7 +22,10 @@ services:
     volumes:
       - db-data:/var/lib/mysql
     container_name: "freshonions-torscraper-db"
-
+    command: [
+            '--wait_timeout=28800',
+            '--general-log=1',
+      ]
 
   crawler:
     build: .
@@ -61,10 +64,42 @@ services:
     ports:
       - 5601:5601
     container_name: "freshonions-torscraper-kibana"
+#
+#  tor-privoxy:
+#    restart: always
+#    build: tor-privoxy
+#    ports:
+#      - "9050:9050" # Tor proxy
+#      - "3129:8118" # Privoxy
+#    container_name: "freshonions-torscraper-tor-privoxy"
+#
+#  tor-privoxy2:
+#    restart: always
+#    build: tor-privoxy2
+#    ports:
+#      - "9051:9051" # Tor proxy
+#      - "3130:8119" # Privoxy
+#    container_name: "freshonions-torscraper-tor-privoxy2"
+#
+#  tor-privoxy3:
+#    restart: always
+#    build: tor-privoxy3
+#    ports:
+#      - "9052:9052" # Tor proxy
+#      - "3131:8120" # Privoxy
+#    container_name: "freshonions-torscraper-tor-privoxy3"
+#
+#  tor-privoxy4:
+#    restart: always
+#    build: tor-privoxy4
+#    ports:
+#      - "9053:9053" # Tor proxy
+#      - "3132:8121" # Privoxy
+#    container_name: "freshonions-torscraper-tor-privoxy4"
 
   tor-privoxy:
     restart: always
-    build: tor-privoxy
+    image: dockage/tor-privoxy:latest
     ports:
       - "9050:9050" # Tor proxy
       - "3129:8118" # Privoxy
@@ -72,28 +107,28 @@ services:
 
   tor-privoxy2:
     restart: always
-    build: tor-privoxy2
+    image: dockage/tor-privoxy:latest
     ports:
-      - "9051:9051" # Tor proxy
-      - "3130:8119" # Privoxy
+      - "9051:9050" # Tor proxy
+      - "3130:8118" # Privoxy
     container_name: "freshonions-torscraper-tor-privoxy2"
-
+  
   tor-privoxy3:
     restart: always
-    build: tor-privoxy3
+    image: dockage/tor-privoxy:latest
     ports:
-      - "9052:9052" # Tor proxy
-      - "3131:8120" # Privoxy
+      - "9052:9050" # Tor proxy
+      - "3131:8118" # Privoxy
     container_name: "freshonions-torscraper-tor-privoxy3"
-
+  
   tor-privoxy4:
     restart: always
-    build: tor-privoxy4
+    image: dockage/tor-privoxy:latest
     ports:
-      - "9053:9053" # Tor proxy
-      - "3132:8121" # Privoxy
+      - "9053:9050" # Tor proxy
+      - "3132:8118" # Privoxy
     container_name: "freshonions-torscraper-tor-privoxy4"
-
+  
 volumes:
   es-data:
     driver: local
