@@ -97,7 +97,7 @@ class Connection:
 
     def connect(self):
         #Generate a random int between 0 and 4 (include) to know which Tor Host we will use.
-        index= random.randint(0,4)
+        index= random.randint(0,3)
         torEndpoint = TCP4ClientEndpoint(reactor, TOR_HOSTS[index][0], TOR_HOSTS[index][1])
         proxiedEndpoint = SOCKS5ClientEndpoint(self.active_host.hostname.encode("ascii"), self.current_port, torEndpoint)
         d = proxiedEndpoint.connect(PortScannerClientFactory(self))
