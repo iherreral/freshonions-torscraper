@@ -18,6 +18,8 @@ services:
 
   db:
     build: db
+    environment:
+      - TZ=UTC
     # uncomment if you want database to persist
     volumes:
       - db-data:/var/lib/mysql
