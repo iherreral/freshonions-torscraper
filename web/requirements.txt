@@ -1,10 +1,10 @@
 # TODO: slim down the requirements
 pony==0.7.6
-PyMySQL==0.9.2
-py-pretty==1
+PyMySQL
+py-pretty
 elasticsearch>=5.0.0,<6.0.0
 elasticsearch-dsl>=5.0.0,<6.0.0
-python-dateutil==2.7.3
+python-dateutil
 # removed to see if web interface works w/o this
 #numpy
 #scipy
@@ -17,15 +17,15 @@ python-dateutil==2.7.3
 #app
 #networkx
 #paramiko
-crypto==1.4.1
-pycrypto==2.6.1
-SHA256==0.1
-langdetect==1.0.7
-pycountry==18.5.26
-python-memcached==1.59
-flask==1.0.2
-timeout_decorator==0.4.0
-pretty==0.1
+crypto
+pycrypto
+SHA256
+langdetect
+pycountry
+python-memcached
+flask
+timeout_decorator
+pretty
 PyPyDispatcher>=2.1.0
-urllib3==1.23
-Werkzeug==0.14.1
+urllib3==1.21.1
+Werkzeug<1
