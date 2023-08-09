@@ -49,7 +49,7 @@ Written flask secret to '/your/path/freshonions-torscraper/etc/private/flask.sec
 
 Now go to the freshonions-torscraper root directory and start the docker containers by doing:
 
-    sudo docker-compose up
+    sudo docker compose build && docker compose up -d && docker compose logs -f
 
 The docker-compose command will start 9 different containers.
 * Web service (1)
