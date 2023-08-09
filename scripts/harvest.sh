@@ -4,7 +4,7 @@ DIR=$( cd "$(dirname "$0")" ; pwd -P )
 LIST=`mktemp`
 LIST2=`mktemp`
 TOR2WEB_JSON=`mktemp`
-http_proxy="" https_proxy="" wget --no-check-certificate -O $TOR2WEB_JSON https://eqt5g4fuenphqinx.tor2web.org/antanistaticmap/stats/yesterday
+http_proxy="" https_proxy="" wget --no-check-certificate --tries=1 -T 10 -O $TOR2WEB_JSON https://eqt5g4fuenphqinx.tor2web.org/antanistaticmap/stats/yesterday
 $SCRIPTDIR/import_tor2web.py $TOR2WEB_JSON > $LIST
 rm $TOR2WEB_JSON
 
