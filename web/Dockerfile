@@ -7,8 +7,8 @@ RUN apk update && \
 RUN mkdir -p /opt/torscraper/web
 COPY . /opt/torscraper/web
 WORKDIR /opt/torscraper/web
-
-RUN pip install -r requirements.txt
+RUN python -m pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt --no-cache
 
 RUN chmod +x /opt/torscraper/web/docker-entrypoint.sh
 

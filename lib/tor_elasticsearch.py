@@ -35,11 +35,12 @@ class JSONSerializerPython2(serializer.JSONSerializer):
 
 
 def elasticsearch_retrieve_page_by_id(page_id):
-    query = Search().filter(Q("term", nid=int(page_id)))[:1]
+    query = Search().filter(Q("term", nid=int(page_id)))
     result = query.execute()
     if result.hits.total == 0:
         return None
     return result.hits[0]
+    
 
 def elasticsearch_delete_old():
     _from = NEVER
