@@ -14,7 +14,7 @@ scipy==1.2.3
 scikit-learn==0.20.4
 tabulate==0.8.10
 langdetect==1.0.9
-pycountry<19.7.15
+pycountry==20.7.3
 networkx==2.2
 python-memcached==1.59
 pillow==6.2.2

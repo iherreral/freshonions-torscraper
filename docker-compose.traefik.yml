@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  dark:
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.dark.loadbalancer.server.port=5000
+      - traefik.http.routers.dark.entrypoints=web
+      - traefik.http.routers.dark.rule=Host(`${FQDN}`)
+      - traefik.http.middlewares.dark-https-redirect.redirectscheme.scheme=websecure
+      - traefik.http.routers.dark.middlewares=nginx-https-redirect
+      - traefik.http.routers.dark-secure.entrypoints=websecure
+      - traefik.http.routers.dark-secure.rule=Host(`${FQDN}`)
+      - traefik.http.routers.dark-secure.tls=true
+      - traefik.http.routers.dark-secure.tls.certresolver=letsencrypt
+
+networks:
+  proxy:
+    external: true
