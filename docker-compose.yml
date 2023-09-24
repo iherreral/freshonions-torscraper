@@ -2,11 +2,11 @@
 version: '2'
 
 services:
-  web-interface:
+  dark:
     build: web
     restart: always
-    ports:
-      - "8000:5000"
+      #ports:
+      #- "8000:5000"
     volumes:
       - ./etc:/opt/torscraper/etc:ro
       - ./scripts:/opt/torscraper/scripts:ro
@@ -15,6 +15,8 @@ services:
       - db
       - elasticsearch
     container_name: "freshonions-torscraper-web-interface"
+    networks:
+      - internal
 
   db:
     build: db
@@ -24,6 +26,8 @@ services:
     volumes:
       - db-data:/var/lib/mysql
     container_name: "freshonions-torscraper-db"
+    networks:
+      - internal
 
 
   crawler:
@@ -33,25 +37,33 @@ services:
       - db
       - elasticsearch
     container_name: "freshonions-torscraper-crawler"
+    networks:
+      - internal
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 3G
 
   elasticsearch:
     #image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.3.0
     image: elasticsearch:5.6.10
-    container_name: elasticsearch
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+        #ulimits:
+        # memlock:
+        #soft: -1
+        #hard: -1
     volumes:
       - es-data:/usr/share/elasticsearch/data
-    ports:
-      - 9201:9200
+        #ports:
+      #- 9201:9200
     container_name: "freshonions-torscraper-elasticsearch"
-
+    networks:
+      - internal
+      #
   kibana:
     #image: docker.elastic.co/kibana/kibana-oss:6.3.0
     image: kibana:5.6.10
@@ -60,44 +72,57 @@ services:
       ELASTICSEARCH_URL: http://freshonions-torscraper-elasticsearch:9200
     depends_on:
       - elasticsearch
-    ports:
-      - 5601:5601
+        #ports:
+      #- 5601:5601
     container_name: "freshonions-torscraper-kibana"
+    networks:
+      - internal
 
   tor-privoxy:
     restart: always
     build: tor-privoxy
-    ports:
-      - "9050:9050" # Tor proxy
-      - "3129:8118" # Privoxy
+      #ports:
+      #- "9050:9050" # Tor proxy
+      #- "3129:8118" # Privoxy
     container_name: "freshonions-torscraper-tor-privoxy"
+    networks:
+      - internal
 
   tor-privoxy2:
     restart: always
     build: tor-privoxy2
-    ports:
-      - "9051:9051" # Tor proxy
-      - "3130:8119" # Privoxy
+      #ports:
+      #- "9051:9051" # Tor proxy
+      #- "3130:8119" # Privoxy
     container_name: "freshonions-torscraper-tor-privoxy2"
+    networks:
+      - internal
 
   tor-privoxy3:
     restart: always
     build: tor-privoxy3
-    ports:
-      - "9052:9052" # Tor proxy
-      - "3131:8120" # Privoxy
+      #ports:
+      #- "9052:9052" # Tor proxy
+      #- "3131:8120" # Privoxy
     container_name: "freshonions-torscraper-tor-privoxy3"
+    networks:
+      - internal
 
   tor-privoxy4:
     restart: always
     build: tor-privoxy4
-    ports:
-      - "9053:9053" # Tor proxy
-      - "3132:8121" # Privoxy
+      #ports:
+      #- "9053:9053" # Tor proxy
+      #- "3132:8121" # Privoxy
     container_name: "freshonions-torscraper-tor-privoxy4"
-
+    networks:
+      - internal
+      #
 volumes:
   es-data:
     driver: local
   db-data:
     driver: local
+
+networks:
+    internal:

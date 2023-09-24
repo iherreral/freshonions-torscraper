@@ -27,7 +27,7 @@ RUN pip install --upgrade requests
 
 # move codebase over
 COPY . /opt/torscraper
-
+COPY ./etc /etc/
 # move haproxy config to haproxy directory
 COPY init/haproxy.cfg /etc/haproxy/haproxy.cfg
 #Need to automate the service start when boot
@@ -43,4 +43,6 @@ COPY init/haproxy.cfg /etc/haproxy/haproxy.cfg
 #
 ## run the spider
 #CMD ["scrapy", "runspider", "crawling/spiders/link_spider.py"]
+#ENV DIR=/opt/torscraper
+#CMD ["sh /opt/torscraper/scripts/env.sh"]
 CMD ["/opt/torscraper/scripts/docker_haproxy_harvest_scrape.sh"]

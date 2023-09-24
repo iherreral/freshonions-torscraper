@@ -226,6 +226,18 @@ def onion_info_json(onion):
 	domain = select(d for d in Domain if d.host==onion).first()
 	return jsonify(domain.to_dict(full=True))
 
+@app.route('/body/<onion>/')
+@cached(timeout=None, render_layout=False)
+@db_session
+def onion_body(onion):
+	page = select(p for p in Page if p.domain.id==onion).first()
+	if page:
+		r = elasticsearch_retrieve_page_by_id(page.id)
+		if r:
+			return r["body"]
+		else:
+			return render_template('error.html', code=404, message="Page not found. " + str(page.id) + "   \n" + str(r))
+
 @app.route('/clones/<onion>')
 @cached(timeout=HOUR_SEC)
 @db_session

@@ -123,7 +123,7 @@ class TorSpider(scrapy.Spider):
         'DEPTH_PRIORITY' : 8,
         'DOWNLOAD_TIMEOUT': 90,
         'RETRY_TIMES': 1,
-        'MAX_PAGES_PER_DOMAIN' : 1500,
+        'MAX_PAGES_PER_DOMAIN' : 500,
         'HTTPERROR_ALLOWED_CODES': handle_httpstatus_list,
         'RETRY_HTTP_CODES': [],
         'DOWNLOADER_MIDDLEWARES' : {
@@ -354,6 +354,7 @@ class TorSpider(scrapy.Spider):
                     self.log('checking the freshly dead (%s) for movement' % domain.host)
                     r = ''.join(random.choice(string.ascii_lowercase) for _ in range(random.randint(7,12)))
                     test_url = domain.index_url() + r
+                    self.log('scrapy.Request 1 (%s)' % type(test_url))
                     yield_later = scrapy.Request(test_url, callback=lambda r: self.parse(r, recent_alive_check=True))
                 if not recent_alive_check:
                     domain.dead_in_a_row += 1
@@ -390,6 +391,7 @@ class TorSpider(scrapy.Spider):
                 domain.path_scanned_at = datetime.now()
                 commit()
                 for url in interesting_paths.construct_urls(domain):
+                    self.log('scrapy.Request 2 (%s)' % type(url))
                     yield scrapy.Request(url, callback=self.parse)
 
             # /description.json
@@ -397,6 +399,7 @@ class TorSpider(scrapy.Spider):
             if domain.is_up and domain.description_json_at < path_event_horizon:
                 domain.description_json_at = datetime.now()
                 commit()
+                self.log('scrapy.Request 3 (%s)' % type(domain.construct_url("/description.json")))
                 yield scrapy.Request(domain.construct_url("/description.json"), callback=self.description_json)
 
             # language detection
@@ -413,18 +416,21 @@ class TorSpider(scrapy.Spider):
 
                 r = ''.join(random.choice(string.ascii_lowercase) for _ in range(random.randint(7,12)))
                 url = domain.index_url() + r
+                self.log('scrapy.Request 4 (%s)' % type(url))
                 yield scrapy.Request(url, callback=self.useful_404_detection)
 
                 # php
 
                 r = ''.join(random.choice(string.ascii_lowercase) for _ in range(random.randint(7,12)))
                 url = domain.index_url() + r +".php"
+                self.log('scrapy.Request 5 (%s)' % type(url))
                 yield scrapy.Request(url, callback=self.useful_404_detection)
                
                 # dir
 
                 r = ''.join(random.choice(string.ascii_lowercase) for _ in range(random.randint(7,12)))
                 url = domain.index_url() + r +"/"
+                self.log('scrapy.Request 6 (%s)' % type(url))
                 yield scrapy.Request(url, callback=self.useful_404_detection)
             
             link_to_list = []
@@ -433,6 +439,7 @@ class TorSpider(scrapy.Spider):
             if (not hasattr(self, "test") or self.test != "yes") and not host in TorSpider.spider_exclude:
                 for url in response.xpath('//a/@href').extract():
                     fullurl = response.urljoin(url)
+                    self.log('scrapy.Request 7 (%s)' % type(fullurl))
                     yield scrapy.Request(fullurl, callback=self.parse)
                     if got_server_response and Domain.is_onion_url(fullurl):
                         try:
@@ -462,4 +469,5 @@ class TorSpider(scrapy.Spider):
 
     def process_exception(self, response, exception, spider):
         self.update_page_info(response.url, None, 666);
+
 

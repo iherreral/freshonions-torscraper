@@ -1260,11 +1260,3 @@ NUMBER=`wc -l $LIST2 | tr -s ' ' | cut -f 1 -d ' '`
 echo "Harvested $NUMBER onion links..."
 #$SCRIPTDIR/push_list.sh $LIST2
 #rm $LIST $LIST2
-
-split --lines 50 /opt/torscraper/onions_list/onions.txt /opt/torscraper/onions_list/onions_
-rm /opt/torscraper/onions_list/onions.txt
-for file in `ls -1 /opt/torscraper/onions_list/onions_*`
-do 
-$SCRIPTDIR/push_list.sh $file
-rm $file
-done

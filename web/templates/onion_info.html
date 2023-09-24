@@ -114,6 +114,7 @@ No title for this domain.
 {% endif %}
 <a href="{{domain.index_url()}}">[SITE]</a>
 <a href="{{url_for('onion_info_json', onion=domain.host)}}">[JSON]</a>
+<a href="{{url_for('onion_body', onion=domain.id)}}" target="_blank">[BODY]</a>
 </div>
 </p>
 <p>

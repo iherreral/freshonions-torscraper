@@ -12,5 +12,5 @@ done
 echo "$DB_HOST is ready"
 # Give it another second.
 sleep 1;
-
+/opt/torscraper/scripts/elasticsearch_migrate.sh
 /opt/torscraper/scripts/web.sh
